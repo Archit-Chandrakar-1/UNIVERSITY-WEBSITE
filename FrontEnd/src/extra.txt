@@ -1,0 +1,123 @@
+
+const InspirationalSlider: React.FC = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsPerView, setItemsPerView] = useState(4);
+
+  // Update items per view based on screen size
+  useEffect(() => {
+    const updateItemsPerView = () => {
+      if (window.innerWidth < 640) {
+        setItemsPerView(1); // Mobile: 1 item
+      } else if (window.innerWidth < 1024) {
+        setItemsPerView(2); // Tablet: 2 items
+      } else {
+        setItemsPerView(4); // Desktop: 4 items
+      }
+    };
+
+    updateItemsPerView();
+    window.addEventListener('resize', updateItemsPerView);
+    return () => window.removeEventListener('resize', updateItemsPerView);
+  }, []);
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    if (inspirationalFigures.length > itemsPerView) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => 
+          prevIndex >= inspirationalFigures.length - itemsPerView 
+            ? 0 
+            : prevIndex + 1
+        );
+      }, 3000); // Change slide every 3 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [itemsPerView]);
+
+  // If 4 or fewer items, show static grid
+  if (inspirationalFigures.length <= 4) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {inspirationalFigures.map((figure, index) => (
+          <div key={index} className="bg-white border-2 border-gray-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+            <img
+              src={figure.photo}
+              alt={figure.name}
+              className="w-24 h-24 rounded-lg mx-auto mb-4 object-cover grayscale hover:grayscale-0 transition-all duration-300"
+            />
+            <h4 className="text-lg font-bold text-[#142143] mb-2">{figure.title}</h4>
+            <p className="text-gray-600 text-sm italic">{figure.name}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // For more than 4 items, show slider
+  return (
+    <div className="relative overflow-hidden">
+      <div 
+        className="flex transition-transform duration-500 ease-in-out"
+        style={{
+          transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
+          width: `${(inspirationalFigures.length * 100) / itemsPerView}%`
+        }}
+      >
+        {inspirationalFigures.map((figure, index) => (
+          <div 
+            key={index} 
+            className="flex-shrink-0 px-3"
+            style={{ width: `${100 / inspirationalFigures.length}%` }}
+          >
+            <div className="bg-white border-2 border-gray-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+              <img
+                src={figure.photo}
+                alt={figure.name}
+                className="w-24 h-24 rounded-lg mx-auto mb-4 object-cover grayscale hover:grayscale-0 transition-all duration-300"
+              />
+              <h4 className="text-lg font-bold text-[#142143] mb-2">{figure.title}</h4>
+              <p className="text-gray-600 text-sm italic">{figure.name}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Navigation dots */}
+      <div className="flex justify-center mt-6 space-x-2">
+        {Array.from({ length: Math.max(1, inspirationalFigures.length - itemsPerView + 1) }).map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-3 h-3 rounded-full transition-colors ${
+              index === currentIndex ? 'bg-[#ffaf00]' : 'bg-gray-300'
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Optional: Navigation arrows */}
+      <button
+        onClick={() => setCurrentIndex(currentIndex > 0 ? currentIndex - 1 : inspirationalFigures.length - itemsPerView)}
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-[#142143] text-white p-2 rounded-full hover:bg-[#ffaf00] transition-colors opacity-75 hover:opacity-100"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <button
+        onClick={() => setCurrentIndex(currentIndex < inspirationalFigures.length - itemsPerView ? currentIndex + 1 : 0)}
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-[#142143] text-white p-2 rounded-full hover:bg-[#ffaf00] transition-colors opacity-75 hover:opacity-100"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  );
+};
+
+// Then replace the existing inspirational figures section in your JSX with:
+{/* Inspirational Figures */}
+<InspirationalSlider />

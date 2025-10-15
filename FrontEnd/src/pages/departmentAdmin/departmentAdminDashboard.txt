@@ -1,0 +1,125 @@
+
+// import React, { useState, useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import AcademicSection from '../../components/departments/adminSection';
+// import GallerySection from '../../components/departments/gallerySection';
+// import StudyMaterialSection from '../../components/departments/studyMaterialSection';
+// import ProgrammesTable from '../../components/departments/programmesTable';
+// import AdminProgrammesTable from '../../components/adminComponents/adminProgrammesTable';
+// import { logoutDepartmentUser } from '../../services/authDepartmentService'; 
+
+
+// const DepartmentAdminDashboard: React.FC = () => {
+//   const navigate = useNavigate();
+//   const [authenticatedDepartmentName, setAuthenticatedDepartmentName] = useState<string | null>(null);
+//   const [selectedCategoryTab, setSelectedCategoryTab] = useState<'academic' | 'gallery' | 'study_materials' | 'programmes'>('academic');
+
+//   useEffect(() => {
+//     // On mount, check if department is logged in
+//     const storedDepartmentName = localStorage.getItem('departmentName');
+//     const token = localStorage.getItem('departmentUserToken');
+
+//     if (!storedDepartmentName || !token) {
+//       // If not logged in, redirect to login page
+//       navigate('/department-login');
+//     } else {
+//       setAuthenticatedDepartmentName(storedDepartmentName);
+//     }
+//   }, [navigate]);
+
+//   const handleLogout = () => {
+//     logoutDepartmentUser(); // Clear token and department name from local storage
+//     navigate('/department-login'); // Redirect to login page
+//   };
+
+//   if (!authenticatedDepartmentName) {
+//     // Render a loading state or nothing while redirecting
+//     return <div className="text-center p-8">Checking login status...</div>;
+//   }
+
+//   return (
+//     <div className="min-h-screen bg-gray-100 flex">
+//       {/* Sidebar for navigation between content types */}
+//       <aside className="w-64 bg-[#142143] text-white p-6 shadow-lg">
+//         <h2 className="text-2xl font-bold mb-6 text-yellow-400">
+//           {authenticatedDepartmentName} Admin
+//         </h2>
+//         <nav>
+//           <ul>
+//             <li className="mb-2">
+//               <button
+//                 onClick={() => setSelectedCategoryTab('academic')}
+//                 className={`block w-full text-left p-3 rounded-lg transition duration-200 ${
+//                   selectedCategoryTab === 'academic' ? 'bg-yellow-600 text-white' : 'hover:bg-[#2e406e]'
+//                 }`}
+//               >
+//                 Academic Content
+//               </button>
+//             </li>
+//             <li className="mb-2">
+//               <button
+//                 onClick={() => setSelectedCategoryTab('gallery')}
+//                 className={`block w-full text-left p-3 rounded-lg transition duration-200 ${
+//                   selectedCategoryTab === 'gallery' ? 'bg-yellow-600 text-white' : 'hover:bg-[#2e406e]'
+//                 }`}
+//               >
+//                 Gallery
+//               </button>
+//             </li>
+//             <li className="mb-2">
+//               <button
+//                 onClick={() => setSelectedCategoryTab('study_materials')}
+//                 className={`block w-full text-left p-3 rounded-lg transition duration-200 ${
+//                   selectedCategoryTab === 'study_materials' ? 'bg-yellow-600 text-white' : 'hover:bg-[#2e406e]'
+//                 }`}
+//               >
+//                 Study Materials
+//               </button>
+//             </li>
+//             <li className="mb-2">
+//               <button
+//                 onClick={() => setSelectedCategoryTab('programmes')}
+//                 className={`block w-full text-left p-3 rounded-lg transition duration-200 ${
+//                   selectedCategoryTab === 'programmes' ? 'bg-yellow-600 text-white' : 'hover:bg-[#2e406e]'
+//                 }`}
+//               >
+//                 Programmes Offered
+//               </button>
+//             </li>
+//           </ul>
+//         </nav>
+//         <div className="mt-8 pt-4 border-t border-gray-700">
+//           <button
+//             onClick={handleLogout}
+//             className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+//           >
+//             Logout
+//           </button>
+//         </div>
+//       </aside>
+
+//       {/* Main content area */}
+//       <main className="flex-1 p-8 overflow-y-auto">
+//         {selectedCategoryTab === 'academic' && (
+//           <AcademicSection departmentName={authenticatedDepartmentName} />
+//         )}
+//         {selectedCategoryTab === 'gallery' && (
+//           <GallerySection departmentName={authenticatedDepartmentName} />
+//         )}
+//         {selectedCategoryTab === 'study_materials' && (
+//           <StudyMaterialSection departmentName={authenticatedDepartmentName} />
+//         )}
+//         {selectedCategoryTab === 'programmes' && (
+//           <ProgrammesTable departmentName={authenticatedDepartmentName} />
+//         )}
+//          {selectedCategoryTab === 'programmes' && (
+//           <AdminProgrammesTable departmentName={authenticatedDepartmentName} /> 
+//         )}
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default DepartmentAdminDashboard;
+
+// src/pages/departmentAdmin/departmentAdminDashoard.tsx
